@@ -12,6 +12,8 @@ app.use(express.json());
 app.use(fu());
 
 
+// en kommentar
+
 function initRoutes(){
   app.get("/",showAll);
   app.post("/create", createArticle)
