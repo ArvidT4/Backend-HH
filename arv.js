@@ -11,7 +11,7 @@ app.use(bodyParser.json())
 app.use(express.json());
 app.use(fu());
 
-
+//en till
 // en kommentar
 
 function initRoutes(){
