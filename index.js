@@ -18,10 +18,8 @@ app.use(fu());
 function initRoutes(){
 
  app.get("/",showAll);
-
- app.post("/create", createArticle)
-
- app.post("/addImage", addImage)
+ app.post("/test", insertTest)
+ app.post("/addArticle", addArticle)
 
 
 
@@ -82,13 +80,7 @@ initRoutes();
 
 }
 
-async function createArticle(req,res){
-
-let body = req.body;
-
-}
-
-async function addImage(req, res){
+async function addArticle(req, res){
 
     let {img} = req.files;
      
@@ -100,32 +92,49 @@ async function addImage(req, res){
     let url = "pictures/"+title+"."+imageName[(length-1)];
     req.files.img.mv("public/"+url);
 
-    let article = {title:title,category:category,description:description,deepDescription:deepDescription, contact:JSON.parse(contact), favorite:JSON.parse(favorite), orderForm:JSON.parse(orderForm),videos:JSON.parse(videos), url:url}
-
-    console.log(article)
-
+    let article = {
+        title:title,category:category,
+        description:description,
+        deepDescription:deepDescription, 
+        contact:JSON.parse(contact), 
+        favorite:JSON.parse(favorite),
+        orderForm:JSON.parse(orderForm),
+        videos:JSON.parse(videos), 
+        url:url
+    }
+    
     const p = await col.insertOne(article)
-
     let result = await col.findOne({_id:p.insertedId})
-
     res.send(result);
 
 
 }
 
 
+async function insertTest(req,res){
+
+   
+    let { title, category, description} = req.body;
+    console.log(title, category, description)
+    let article = {title:title,category:category,description:description}
+    
+    const p = await col.insertOne(article)
+
+    let result = await col.findOne({_id:p.insertedId})
+
+    res.send(result);
+} 
+
+
+
 async function showAll(req,res){
-
-    console.log(col);
-
+    
     try{
-
         let result = await col.find().toArray();
 
-            res.send(result);
+        res.send(result);
 
-        }
-
+    }
     catch(err){
 
         res.send(err);
